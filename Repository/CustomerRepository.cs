@@ -95,7 +95,48 @@ namespace SuperheroesDb_Project.Repository
             return customer;
         }
 
+        Customer ICustomerRepository.GetCustomer(string firstName) // Get customer by name
+        {
+            string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode FROM Customer WHERE FirstName LIKE '" + firstName.Replace("%", @"\%").Replace("_", @"\_")+ "%'";
+
+            Customer customer = new Customer();
+
+            try
+            { //Connect
+                using (SqlConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            customer.CustomerId = reader.GetInt32(0);
+                            customer.FirstName = reader.GetString(1);
+                            customer.LastName = reader.GetString(2);
+                            if (!reader.IsDBNull(reader.GetOrdinal("PostalCode")))
+                                customer.Country = reader.GetString(3);
+                            if (!reader.IsDBNull(reader.GetOrdinal("PostalCode")))
+                                customer.PostalCode = reader.GetString(4);
+
+                        }
+                    }
+
+                    return customer;
+
+                }
+            }
+            catch (SqlException ex) { Console.WriteLine(ex); }
+
+            return customer;
+        }
+
         bool ICustomerRepository.UpdateCustomer(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Customer GetCustomer(string name)
         {
             throw new NotImplementedException();
         }

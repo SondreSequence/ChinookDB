@@ -3723,19 +3723,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\SReinh\\.nuget\\packages\\": {}
+    "C:\\Users\\PShwan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\SReinh\\source\\repos\\ConsoleApp1\\ConsoleApp1\\SuperheroesDb_Project\\SuperheroesDb_Project\\SuperheroesDb_Project.csproj",
+      "projectUniqueName": "C:\\Noroff\\CSharp\\Assignments\\Assignment02\\ChinookDB\\SuperheroesDb_Project.csproj",
       "projectName": "SuperheroesDb_Project",
-      "projectPath": "C:\\Users\\SReinh\\source\\repos\\ConsoleApp1\\ConsoleApp1\\SuperheroesDb_Project\\SuperheroesDb_Project\\SuperheroesDb_Project.csproj",
-      "packagesPath": "C:\\Users\\SReinh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\SReinh\\source\\repos\\ConsoleApp1\\ConsoleApp1\\SuperheroesDb_Project\\SuperheroesDb_Project\\obj\\",
+      "projectPath": "C:\\Noroff\\CSharp\\Assignments\\Assignment02\\ChinookDB\\SuperheroesDb_Project.csproj",
+      "packagesPath": "C:\\Users\\PShwan\\.nuget\\packages\\",
+      "outputPath": "C:\\Noroff\\CSharp\\Assignments\\Assignment02\\ChinookDB\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\SReinh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\PShwan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

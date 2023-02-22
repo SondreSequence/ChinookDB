@@ -11,7 +11,7 @@ namespace SuperheroesDb_Project.Repository
     {
         public Customer GetCustomer(int id);
         public List<Customer> GetAllCustomers();
-        public bool AddNewCustomer(int id);
+        public bool AddNewCustomer(string firstName, string lastName, string country, string postalCode, string phone, string email);
         public bool UpdateCustomer(Customer customer);
         public bool DeleteCustomer(Customer customer);
         public Customer GetCustomer(string name);

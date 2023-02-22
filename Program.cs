@@ -10,19 +10,17 @@ internal class Program
     static void Main(string[] args)
     {
         ICustomerRepository customerRepository = new CustomerRepository();
-        // 1 - SelectALL(customerRepository);
-        // 2 - SelectCustomer(customerRepository, 1);
 
-        SelectALL(customerRepository, 20, 3);
 
+        InsertCustomer(customerRepository);
+        
+        
 
     }
 
     static void InsertCustomer(ICustomerRepository repository)
     {
-        Customer test = new Customer();
-        test.FirstName = "Sondre";
-        test.LastName = "Reinholdtsen";
+        Console.WriteLine(repository.AddNewCustomer("Pavel", "Ibrahim", "Norway", "4879", "12345678", "Gjøk@gmail.com"));
     }
 
     static void SelectALL(ICustomerRepository repository, int limit, int offset)

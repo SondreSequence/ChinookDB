@@ -12,17 +12,55 @@ namespace SuperheroesDb_Project.Repository
 {
     internal class CustomerRepository : ICustomerRepository
     {
-        bool ICustomerRepository.AddNewCustomer(int id)
+        bool ICustomerRepository.AddNewCustomer(string firstName,
+            string lastName,
+            string country,
+            string postalCode,
+            string phone,
+            string email)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
+                {
+                    connection.Open();
+
+                    string sql = "INSERT INTO Customer (FirstName, LastName, Country, PostalCode, Phone, Email)\n" +
+                                 "VALUES (FirstName, @LastName, @Country, @PostalCode, @Phone, @Email)";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+
+                        command.Parameters.AddWithValue("@FirstName", firstName);
+                        command.Parameters.AddWithValue("@LastName", lastName);
+                        command.Parameters.AddWithValue("@Country", country);
+                        command.Parameters.AddWithValue("@PostalCode", postalCode);
+                        command.Parameters.AddWithValue("@Phone", phone);
+                        command.Parameters.AddWithValue("@Email", email);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+
+
+            return true;
+          
+
         }
+
 
         bool ICustomerRepository.DeleteCustomer(Customer customer)
         {
             throw new NotImplementedException();
         }
 
-        List<Customer> ICustomerRepository.GetAllCustomers()
+        List<Customer> ICustomerRepository.GetAllCustomers() // Get all customers in the database
         {
             List<Customer> CustomerList = new List<Customer>();
             string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email FROM Customer";
@@ -61,7 +99,7 @@ namespace SuperheroesDb_Project.Repository
         }
 
 
-        Customer ICustomerRepository.GetCustomer(int id)
+        Customer ICustomerRepository.GetCustomer(int id) // Get customer by id
         {
             string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode FROM Customer WHERE CustomerId = " + id;
             Customer customer = new Customer();
@@ -131,8 +169,11 @@ namespace SuperheroesDb_Project.Repository
             return customer;
         }
 
-        List<Customer> ICustomerRepository.SelectCustomerPage(int limit, int offset)
+        List<Customer> ICustomerRepository.SelectCustomerPage(int limit, int offset) // Get customers with limit and offset
         {
+
+            // Get customers in the database by limit and offset
+
             List<Customer> customers = new List<Customer>();
 
             try
@@ -185,9 +226,5 @@ namespace SuperheroesDb_Project.Repository
             throw new NotImplementedException();
         }
 
-        public Customer GetCustomer(string name)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

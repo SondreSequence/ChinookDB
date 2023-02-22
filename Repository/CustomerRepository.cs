@@ -255,7 +255,38 @@ namespace SuperheroesDb_Project.Repository
             return true;
         }
 
-        public string GetCustomersByCountry()
+        public string GetCustomersByHighestSpent()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            string sql = "SELECT Customer.FirstName, SUM(Invoice.Total) AS TotalSpent\r\nFROM Customer\r\nJOIN Invoice ON Customer.CustomerId = Invoice.CustomerId\r\nGROUP BY Customer.CustomerId, Customer.FirstName, Customer.LastName\r\nORDER BY TotalSpent DESC;\r\n";
+            
+                try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string firstname = reader.GetString(0);
+                            decimal totalSpent = reader.GetDecimal(1);
+                            stringBuilder.AppendLine(firstname + ": " + totalSpent);
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex) { Console.WriteLine(ex); }
+
+            return stringBuilder.ToString();
+
+        }
+
+    
+
+    public string GetCustomersByCountry()
         {
             StringBuilder stringBuilder= new StringBuilder();
 

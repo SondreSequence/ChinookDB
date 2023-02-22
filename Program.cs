@@ -9,9 +9,12 @@ internal class Program
 {
     static void Main(string[] args)
     {
+        //Console.WriteLine("FUCK");
         ICustomerRepository customerRepository = new CustomerRepository();
 
-        SelectCountries(customerRepository);
+        //SelectCountries(customerRepository);
+
+        Console.WriteLine(customerRepository.GetCustomersByHighestSpent());
 
 
     }

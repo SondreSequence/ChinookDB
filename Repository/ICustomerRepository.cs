@@ -12,6 +12,8 @@ namespace SuperheroesDb_Project.Repository
         public Customer GetCustomer(int id);
         public List<Customer> GetAllCustomers();
         public string GetCustomersByCountry();
+        public string GetCustomersByHighestSpent();
+
         public bool AddNewCustomer(Customer customer);
         public bool UpdateCustomer(int ID, Customer customer);
         public bool DeleteCustomer(Customer customer);

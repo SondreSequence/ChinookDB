@@ -82,7 +82,7 @@ namespace SuperheroesDb_Project.Repository
                             customer.Country = reader.GetString(3);
                             if (!reader.IsDBNull(reader.GetOrdinal("PostalCode")))
                                 customer.PostalCode = reader.GetString(4);
-              
+
                         }
                     }
 
@@ -97,7 +97,7 @@ namespace SuperheroesDb_Project.Repository
 
         Customer ICustomerRepository.GetCustomer(string firstName) // Get customer by name
         {
-            string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode FROM Customer WHERE FirstName LIKE '" + firstName.Replace("%", @"\%").Replace("_", @"\_")+ "%'";
+            string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode FROM Customer WHERE FirstName LIKE '" + firstName.Replace("%", @"\%").Replace("_", @"\_") + "%'";
 
             Customer customer = new Customer();
 
@@ -130,6 +130,54 @@ namespace SuperheroesDb_Project.Repository
 
             return customer;
         }
+
+        List<Customer> ICustomerRepository.SelectCustomerPage(int limit, int offset)
+        {
+            List<Customer> customers = new List<Customer>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
+                {
+                    connection.Open();
+
+                    string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode FROM Customer " +
+                        "ORDER BY CustomerId " +
+                        "LIMIT @Limit " +
+                        "OFFSET @Offset ROWS";
+
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@Limit", limit);
+                        command.Parameters.AddWithValue("@Offset", offset);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Customer customer = new Customer();
+                                customer.CustomerId = reader.GetInt32(0);
+                                customer.FirstName = reader.GetString(1);
+                                customer.LastName = reader.GetString(2);
+                                customer.Country = reader.GetString(3);
+                                if (!reader.IsDBNull(reader.GetOrdinal("PostalCode")))
+                                    customer.PostalCode = reader.GetString(4);
+
+                                customers.Add(customer);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return customers;
+        }
+
 
         bool ICustomerRepository.UpdateCustomer(Customer customer)
         {

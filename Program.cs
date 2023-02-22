@@ -13,7 +13,9 @@ internal class Program
         // 1 - SelectALL(customerRepository);
         // 2 - SelectCustomer(customerRepository, 1);
 
-        SelectCustomer(customerRepository, "Helena");
+        SelectALL(customerRepository, 20, 3);
+
+
     }
 
     static void InsertCustomer(ICustomerRepository repository)
@@ -23,9 +25,9 @@ internal class Program
         test.LastName = "Reinholdtsen";
     }
 
-    static void SelectALL(ICustomerRepository repository)
+    static void SelectALL(ICustomerRepository repository, int limit, int offset)
     {
-        PrintCustomers(repository.GetAllCustomers());
+        PrintCustomers(repository.SelectCustomerPage(limit, offset));
     }
 
     static void SelectCustomer(ICustomerRepository repository, int ID)

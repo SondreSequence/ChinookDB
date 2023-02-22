@@ -15,5 +15,6 @@ namespace SuperheroesDb_Project.Repository
         public bool UpdateCustomer(Customer customer);
         public bool DeleteCustomer(Customer customer);
         public Customer GetCustomer(string name);
+        public List<Customer> SelectCustomerPage(int limit, int offset);
     }
 }

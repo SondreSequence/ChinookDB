@@ -26,7 +26,7 @@ namespace SuperheroesDb_Project.Repository
                     connection.Open();
 
                     string sql = "INSERT INTO Customer (FirstName, LastName, Country, PostalCode, Phone, Email)\n" +
-                                 "VALUES (FirstName, @LastName, @Country, @PostalCode, @Phone, @Email)";
+                           "VALUES (@FirstName, @LastName, @Country, @PostalCode, @Phone, @Email)";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -101,7 +101,7 @@ namespace SuperheroesDb_Project.Repository
 
         Customer ICustomerRepository.GetCustomer(int id) // Get customer by id
         {
-            string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode FROM Customer WHERE CustomerId = " + id;
+            string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email FROM Customer WHERE CustomerId = " + id;
             Customer customer = new Customer();
 
             try
@@ -120,7 +120,10 @@ namespace SuperheroesDb_Project.Repository
                             customer.Country = reader.GetString(3);
                             if (!reader.IsDBNull(reader.GetOrdinal("PostalCode")))
                                 customer.PostalCode = reader.GetString(4);
-
+                            if (!reader.IsDBNull(reader.GetOrdinal("Phone")))
+                                customer.Phone = reader.GetString(5);
+                            if (!reader.IsDBNull(reader.GetOrdinal("Email")))
+                                customer.Email = reader.GetString(6);
                         }
                     }
 
@@ -135,7 +138,7 @@ namespace SuperheroesDb_Project.Repository
 
         Customer ICustomerRepository.GetCustomer(string firstName) // Get customer by name
         {
-            string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode FROM Customer WHERE FirstName LIKE '" + firstName.Replace("%", @"\%").Replace("_", @"\_") + "%'";
+            string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email FROM Customer WHERE FirstName LIKE '" + firstName.Replace("%", @"\%").Replace("_", @"\_") + "%'";
 
             Customer customer = new Customer();
 
@@ -152,10 +155,13 @@ namespace SuperheroesDb_Project.Repository
                             customer.CustomerId = reader.GetInt32(0);
                             customer.FirstName = reader.GetString(1);
                             customer.LastName = reader.GetString(2);
-                            if (!reader.IsDBNull(reader.GetOrdinal("PostalCode")))
-                                customer.Country = reader.GetString(3);
+                            customer.Country = reader.GetString(3);
                             if (!reader.IsDBNull(reader.GetOrdinal("PostalCode")))
                                 customer.PostalCode = reader.GetString(4);
+                            if (!reader.IsDBNull(reader.GetOrdinal("Phone")))
+                                customer.Phone = reader.GetString(5);
+                            if (!reader.IsDBNull(reader.GetOrdinal("Email")))
+                                customer.Email = reader.GetString(6);
 
                         }
                     }

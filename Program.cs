@@ -13,6 +13,7 @@ internal class Program
 
 
         InsertCustomer(customerRepository);
+        SelectCustomer(customerRepository, "Pavel");
         
         
 

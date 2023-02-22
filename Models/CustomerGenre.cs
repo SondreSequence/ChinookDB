@@ -6,5 +6,8 @@ using System.Threading.Tasks;
 
 namespace SuperheroesDb_Project.Models
 {
-    public class CustomerGenre{}
+    public class CustomerGenre
+    {
+        
+    }
 }

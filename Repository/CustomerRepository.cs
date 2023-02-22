@@ -12,13 +12,7 @@ namespace SuperheroesDb_Project.Repository
 {
     internal class CustomerRepository : ICustomerRepository
     {
-        bool ICustomerRepository.AddNewCustomer(string firstName,
-            string lastName,
-            string country,
-            string postalCode,
-            string phone,
-            string email)
-        {
+        bool ICustomerRepository.AddNewCustomer(Customer customer) { 
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
@@ -31,12 +25,12 @@ namespace SuperheroesDb_Project.Repository
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
 
-                        command.Parameters.AddWithValue("@FirstName", firstName);
-                        command.Parameters.AddWithValue("@LastName", lastName);
-                        command.Parameters.AddWithValue("@Country", country);
-                        command.Parameters.AddWithValue("@PostalCode", postalCode);
-                        command.Parameters.AddWithValue("@Phone", phone);
-                        command.Parameters.AddWithValue("@Email", email);
+                        command.Parameters.AddWithValue("@FirstName", customer.FirstName);
+                        command.Parameters.AddWithValue("@LastName", customer.LastName);
+                        command.Parameters.AddWithValue("@Country", customer.Country);
+                        command.Parameters.AddWithValue("@PostalCode", customer.PostalCode);
+                        command.Parameters.AddWithValue("@Phone", customer.Phone);
+                        command.Parameters.AddWithValue("@Email", customer.Email);
 
                         command.ExecuteNonQuery();
                     }
@@ -76,7 +70,7 @@ namespace SuperheroesDb_Project.Repository
                         while (reader.Read())
                         {
                             Customer customer = new Customer();
-                            customer.CustomerId = reader.GetInt32(0);
+                            customer.Id = reader.GetInt32(0);
                             customer.FirstName = reader.GetString(1);
                             customer.LastName = reader.GetString(2);
                             customer.Country = reader.GetString(3);
@@ -114,7 +108,7 @@ namespace SuperheroesDb_Project.Repository
                     {
                         while (reader.Read())
                         {
-                            customer.CustomerId = reader.GetInt32(0);
+                            customer.Id = reader.GetInt32(0);
                             customer.FirstName = reader.GetString(1);
                             customer.LastName = reader.GetString(2);
                             customer.Country = reader.GetString(3);
@@ -152,7 +146,7 @@ namespace SuperheroesDb_Project.Repository
                     {
                         while (reader.Read())
                         {
-                            customer.CustomerId = reader.GetInt32(0);
+                            customer.Id = reader.GetInt32(0);
                             customer.FirstName = reader.GetString(1);
                             customer.LastName = reader.GetString(2);
                             customer.Country = reader.GetString(3);
@@ -189,7 +183,7 @@ namespace SuperheroesDb_Project.Repository
                     connection.Open();
 
                     string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode FROM Customer " +
-                        "ORDER BY CustomerId " +
+                        "ORDER BY Id " +
                         "OFFSET @Offset ROWS " +
                         "FETCH NEXT @Limit ROWS ONLY";
 
@@ -205,7 +199,7 @@ namespace SuperheroesDb_Project.Repository
                             while (reader.Read())
                             {
                                 Customer customer = new Customer();
-                                customer.CustomerId = reader.GetInt32(0);
+                                customer.Id = reader.GetInt32(0);
                                 customer.FirstName = reader.GetString(1);
                                 customer.LastName = reader.GetString(2);
                                 customer.Country = reader.GetString(3);
@@ -227,10 +221,69 @@ namespace SuperheroesDb_Project.Repository
         }
 
 
-        bool ICustomerRepository.UpdateCustomer(Customer customer)
+        bool ICustomerRepository.UpdateCustomer(int ID, Customer customer)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
+                {
+                    connection.Open();
+
+                    string sql = "UPDATE Customer SET FirstName = @FirstName, LastName = @LastName, Country = @Country, PostalCode = @PostalCode, Phone = @Phone, Email = @Email\n" +
+                               "WHERE CustomerId = @Id";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", ID);
+                        command.Parameters.AddWithValue("@FirstName", customer.FirstName);
+                        command.Parameters.AddWithValue("@LastName", customer.LastName);
+                        command.Parameters.AddWithValue("@Country", customer.Country);
+                        command.Parameters.AddWithValue("@PostalCode", customer.PostalCode);
+                        command.Parameters.AddWithValue("@Phone", customer.Phone);
+                        command.Parameters.AddWithValue("@Email", customer.Email);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+
+            return true;
+        }
+
+        public string GetCustomersByCountry()
+        {
+            StringBuilder stringBuilder= new StringBuilder();
+
+            string sql = "SELECT Country, COUNT(*) as CustomerCount FROM Customer GROUP BY Country ORDER BY CustomerCount DESC";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string country = reader.GetString(0);
+                            int customerCount = reader.GetInt32(1);
+                            stringBuilder.AppendLine(country + ": " + customerCount);
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex) { Console.WriteLine(ex); }
+
+            return stringBuilder.ToString();
+
         }
 
     }
+
 }

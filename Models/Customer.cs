@@ -8,7 +8,7 @@ namespace SuperheroesDb_Project.Models;
 public class Customer
 {
     //Id, first name, last name, country, postal code,
-    public int CustomerId { get; set; }
+    public int Id { get; set; }
 
     public string FirstName { get; set; } = null!;
 

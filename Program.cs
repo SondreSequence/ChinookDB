@@ -11,17 +11,23 @@ internal class Program
     {
         ICustomerRepository customerRepository = new CustomerRepository();
 
+        SelectCountries(customerRepository);
 
-        InsertCustomer(customerRepository);
-        SelectCustomer(customerRepository, "Pavel");
-        
-        
 
     }
 
-    static void InsertCustomer(ICustomerRepository repository)
+    static void InsertCustomer(ICustomerRepository repository, string firstName, string lastName, string country, string postalCode, string phone, string email)
     {
-        Console.WriteLine(repository.AddNewCustomer("Pavel", "Ibrahim", "Norway", "4879", "12345678", "Gjøk@gmail.com"));
+
+        Customer customer = new Customer();
+        customer.FirstName = firstName;
+        customer.LastName = lastName;
+        customer.Country = country;
+        customer.PostalCode = postalCode;
+        customer.Phone = phone;
+        customer.Email = email;
+
+        Console.WriteLine(repository.AddNewCustomer(customer));
     }
 
     static void SelectALL(ICustomerRepository repository, int limit, int offset)
@@ -34,9 +40,29 @@ internal class Program
         PrintCustomer(repository.GetCustomer(ID));
     }
 
+    //We update all the customers old values. It does not say you must have the option to only update one value :P
+    static void SelectUpdatedCustomer(ICustomerRepository repository, int ID)
+    {
+        Customer customer = new Customer();
+
+        customer.FirstName = "Kokosnutt";
+        customer.LastName = "KokosKokoko";
+        customer.Country = "Finland";
+        customer.PostalCode = "4321";
+        customer.Phone = "21212121";
+        customer.Email = "Gjok3@gmail.com";
+
+        repository.UpdateCustomer(ID, customer);       
+    }
+
     static void SelectCustomer(ICustomerRepository repository, string name)
     {
         PrintCustomer(repository.GetCustomer(name));
+    }
+
+    static void SelectCountries(ICustomerRepository repository)
+    {
+        Console.WriteLine(repository.GetCustomersByCountry());
     }
 
     static void PrintCustomers(IEnumerable<Customer> customers)

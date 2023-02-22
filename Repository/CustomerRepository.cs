@@ -143,8 +143,9 @@ namespace SuperheroesDb_Project.Repository
 
                     string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode FROM Customer " +
                         "ORDER BY CustomerId " +
-                        "LIMIT @Limit " +
-                        "OFFSET @Offset ROWS";
+                        "OFFSET @Offset ROWS " +
+                        "FETCH NEXT @Limit ROWS ONLY";
+
 
 
                     using (SqlCommand command = new SqlCommand(sql, connection))

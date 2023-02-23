@@ -14,14 +14,13 @@ internal class Program
 
         //SelectCountries(customerRepository);
 
-        Console.WriteLine(customerRepository.GetCustomersByHighestSpent());
+        SelectCustomerFavoriteGenre(customerRepository, 12);
 
 
     }
 
     static void InsertCustomer(ICustomerRepository repository, string firstName, string lastName, string country, string postalCode, string phone, string email)
     {
-
         Customer customer = new Customer();
         customer.FirstName = firstName;
         customer.LastName = lastName;
@@ -41,6 +40,11 @@ internal class Program
     static void SelectCustomer(ICustomerRepository repository, int ID)
     {
         PrintCustomer(repository.GetCustomer(ID));
+    }
+
+    static void SelectCustomerFavoriteGenre(ICustomerRepository repository, int ID)
+    {
+        Console.WriteLine(repository.GetCustomerFavoriteGenre(ID));
     }
 
     //We update all the customers old values. It does not say you must have the option to only update one value :P
@@ -73,9 +77,6 @@ internal class Program
         foreach (Customer customer in customers)
             PrintCustomer(customer);
     }
-
-
-
     static void PrintCustomer(Customer customer)
 
     {

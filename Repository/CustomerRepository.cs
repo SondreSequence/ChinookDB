@@ -1,18 +1,43 @@
 ﻿using Microsoft.Data.SqlClient;
 using SuperheroesDb_Project.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Numerics;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SuperheroesDb_Project.Repository
 {
     internal class CustomerRepository : ICustomerRepository
     {
-        bool ICustomerRepository.AddNewCustomer(Customer customer) { 
+
+        public string[] genres = new string[]
+            {
+            "Rock",
+            "Jazz",
+            "Metal",
+            "Alternative & Punk",
+            "Rock And Roll",
+            "Blues",
+            "Latin",
+            "Reggae",
+            "Pop",
+            "Soundtrack",
+            "Bossa Nova",
+            "Easy Listening",
+            "Heavy Metal",
+            "R&B/Soul",
+            "Electronica/Dance",
+            "World",
+            "Hip Hop/Rap",
+            "Science Fiction",
+            "TV Shows",
+            "Sci Fi & Fantasy",
+            "Drama",
+            "Comedy",
+            "Alternative",
+            "Classical",
+            "Opera"
+            };
+
+        bool ICustomerRepository.AddNewCustomer(Customer customer)
+        {
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
@@ -44,10 +69,9 @@ namespace SuperheroesDb_Project.Repository
 
 
             return true;
-          
+
 
         }
-
 
         bool ICustomerRepository.DeleteCustomer(Customer customer)
         {
@@ -91,7 +115,6 @@ namespace SuperheroesDb_Project.Repository
 
             return CustomerList;
         }
-
 
         Customer ICustomerRepository.GetCustomer(int id) // Get customer by id
         {
@@ -220,7 +243,6 @@ namespace SuperheroesDb_Project.Repository
             return customers;
         }
 
-
         bool ICustomerRepository.UpdateCustomer(int ID, Customer customer)
         {
             try
@@ -260,8 +282,8 @@ namespace SuperheroesDb_Project.Repository
             StringBuilder stringBuilder = new StringBuilder();
 
             string sql = "SELECT Customer.FirstName, SUM(Invoice.Total) AS TotalSpent\r\nFROM Customer\r\nJOIN Invoice ON Customer.CustomerId = Invoice.CustomerId\r\nGROUP BY Customer.CustomerId, Customer.FirstName, Customer.LastName\r\nORDER BY TotalSpent DESC;\r\n";
-            
-                try
+
+            try
             {
                 using (SqlConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
                 {
@@ -284,11 +306,9 @@ namespace SuperheroesDb_Project.Repository
 
         }
 
-    
-
-    public string GetCustomersByCountry()
+        public string GetCustomersByCountry()
         {
-            StringBuilder stringBuilder= new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
 
             string sql = "SELECT Country, COUNT(*) as CustomerCount FROM Customer GROUP BY Country ORDER BY CustomerCount DESC";
 
@@ -314,6 +334,55 @@ namespace SuperheroesDb_Project.Repository
             return stringBuilder.ToString();
 
         }
+
+        string ICustomerRepository.GetCustomerFavoriteGenre(int id)
+        {
+
+            string result = "";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
+                {
+                    connection.Open();
+                    string sql = "SELECT GenreId, COUNT(DISTINCT il.TrackId) AS GenreCount\r\nFROM Invoice i\r\nINNER JOIN InvoiceLine il ON i.InvoiceId = il.InvoiceId\r\nINNER JOIN Track t ON il.TrackId = t.TrackId\r\nWHERE i.CustomerId = " + id.ToString() + "\r\nGROUP BY GenreId\r\nORDER BY GenreCount DESC;";
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+
+                            int[] genreIds = new int[2];
+                            int[] genreValues = new int[2];
+
+                            for (int i = 0; reader.Read() && i < 2; i++)
+                            {
+                                genreIds[i] = reader.GetInt32(0);
+                                genreValues[i] = reader.GetInt32(1);
+                            }
+
+                            if (genreValues[0] == genreValues[1])
+                            {
+                                result = $"Genres: {genres[genreIds[0] - 1]} and {genres[genreIds[1] - 1]}";
+                            }
+                            else
+                            {
+                                result = $"Genre: {genres[genreIds[0] - 1]}";
+                            }
+
+                            reader.Close();
+
+
+
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
 
     }
 

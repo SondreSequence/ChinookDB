@@ -20,6 +20,11 @@
 
 Data Persistence and Access is another assingment and course project in the Advanced .NET program by Noroff. Here we focus on manipulating data from an SQL database.
 
+There are two parts to the assignment.
+Appendix A focuses on different SQL Queries, whereas Appendix B focuses on Database manipulation, adding, getting etc in C# together with SQL Queries. 
+
+Appendix A is present in the "SQLScripts" folder, the rest is Appendix B. 
+
 ## Getting Started
 
 The application is made with C#, SQL and it is created in Visual Studio.

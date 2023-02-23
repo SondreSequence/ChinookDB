@@ -5,6 +5,7 @@ namespace SuperheroesDb_Project.Repository
     public interface ICustomerRepository
     {
 
+        // Check CustomerRepository.cs for more info...
         public Customer GetCustomer(int id);
         public List<Customer> GetAllCustomers();
         public string GetCustomersByCountry();

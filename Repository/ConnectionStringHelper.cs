@@ -5,7 +5,7 @@ namespace SuperheroesDb_Project.Repository
     {
 
         public static string _Datasource = "N-NO-01-01-8189\\SQLEXPRESS"; // Here you can assign your own datasource string
-
+        
         public static string GetConnectionString()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder

@@ -9,16 +9,10 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        //Console.WriteLine("FUCK");
-        ICustomerRepository customerRepository = new CustomerRepository();
-
-        //SelectCountries(customerRepository);
-
-        SelectCustomerFavoriteGenre(customerRepository, 12);
-
-
+        //.... Test code here
     }
 
+    // Can insert a customer (AddCustomer)
     static void InsertCustomer(ICustomerRepository repository, string firstName, string lastName, string country, string postalCode, string phone, string email)
     {
         Customer customer = new Customer();
@@ -36,12 +30,20 @@ internal class Program
     {
         PrintCustomers(repository.SelectCustomerPage(limit, offset));
     }
-
+    
+    // Obtains a particular customer by ID
     static void SelectCustomer(ICustomerRepository repository, int ID)
     {
         PrintCustomer(repository.GetCustomer(ID));
     }
 
+    // Obtains a particular customer by Name
+    static void SelectCustomer(ICustomerRepository repository, string name)
+    {
+        PrintCustomer(repository.GetCustomer(name));
+    }
+
+    // OBtains Customers favorite genre
     static void SelectCustomerFavoriteGenre(ICustomerRepository repository, int ID)
     {
         Console.WriteLine(repository.GetCustomerFavoriteGenre(ID));
@@ -61,22 +63,21 @@ internal class Program
 
         repository.UpdateCustomer(ID, customer);       
     }
-
-    static void SelectCustomer(ICustomerRepository repository, string name)
-    {
-        PrintCustomer(repository.GetCustomer(name));
-    }
-
+    
+    // Obtains countries in the database with respect to the customers...
     static void SelectCountries(ICustomerRepository repository)
     {
         Console.WriteLine(repository.GetCustomersByCountry());
     }
 
+    // Prints out details about the customers.
     static void PrintCustomers(IEnumerable<Customer> customers)
     {
         foreach (Customer customer in customers)
             PrintCustomer(customer);
     }
+
+    // Prints out details about a particular customer. 
     static void PrintCustomer(Customer customer)
 
     {

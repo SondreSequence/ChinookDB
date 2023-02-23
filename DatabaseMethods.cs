@@ -16,6 +16,8 @@ namespace SuperheroesDb_Project
             DatabaseName = databaseName;
         }
 
+        // This functions creates the database
+        // Connecting to the Chinook catalog/database obtained in the assignment
         internal void CreateDatabase()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder

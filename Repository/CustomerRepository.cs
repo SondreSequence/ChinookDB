@@ -7,7 +7,10 @@ namespace SuperheroesDb_Project.Repository
     internal class CustomerRepository : ICustomerRepository
     {
 
-        public string[] genres = new string[]
+        // Decided to assign the names of the different Genres in a string array instead of aquiring it 
+        // directly from the Database
+
+        private readonly string[] genres = new string[]
             {
             "Rock",
             "Jazz",
@@ -36,6 +39,7 @@ namespace SuperheroesDb_Project.Repository
             "Opera"
             };
 
+        // This function adds a new customer to the database by assigning a value to all the elements of a customer...
         bool ICustomerRepository.AddNewCustomer(Customer customer)
         {
             try
@@ -73,11 +77,7 @@ namespace SuperheroesDb_Project.Repository
 
         }
 
-        bool ICustomerRepository.DeleteCustomer(Customer customer)
-        {
-            throw new NotImplementedException();
-        }
-
+        // This function obtains all customers from the database.
         List<Customer> ICustomerRepository.GetAllCustomers() // Get all customers in the database
         {
             List<Customer> CustomerList = new List<Customer>();
@@ -116,6 +116,7 @@ namespace SuperheroesDb_Project.Repository
             return CustomerList;
         }
 
+        // Obtains a customer through a id (int)
         Customer ICustomerRepository.GetCustomer(int id) // Get customer by id
         {
             string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email FROM Customer WHERE CustomerId = " + id;
@@ -153,6 +154,7 @@ namespace SuperheroesDb_Project.Repository
             return customer;
         }
 
+        // Obtains a customer through a name (string)
         Customer ICustomerRepository.GetCustomer(string firstName) // Get customer by name
         {
             string sql = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email FROM Customer WHERE FirstName LIKE '" + firstName.Replace("%", @"\%").Replace("_", @"\_") + "%'";
@@ -192,6 +194,7 @@ namespace SuperheroesDb_Project.Repository
             return customer;
         }
 
+        // Obtains a particular amount of customers with a Limit and Offset.
         List<Customer> ICustomerRepository.SelectCustomerPage(int limit, int offset) // Get customers with limit and offset
         {
 
@@ -243,6 +246,7 @@ namespace SuperheroesDb_Project.Repository
             return customers;
         }
 
+        // Updates all the elements of a single chosen customer (by id) in the database.
         bool ICustomerRepository.UpdateCustomer(int ID, Customer customer)
         {
             try
@@ -277,6 +281,7 @@ namespace SuperheroesDb_Project.Repository
             return true;
         }
 
+        // Obtains the amount each customers have spent, starting with the highest "spender"
         public string GetCustomersByHighestSpent()
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -306,6 +311,7 @@ namespace SuperheroesDb_Project.Repository
 
         }
 
+        // Obtains the amount of customers in each Country, starting with the highest: USA
         public string GetCustomersByCountry()
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -335,6 +341,7 @@ namespace SuperheroesDb_Project.Repository
 
         }
 
+        // Obtains the favorite genre(s) of a single customer (2 genres if they have a similar amount of purchases)
         string ICustomerRepository.GetCustomerFavoriteGenre(int id)
         {
 

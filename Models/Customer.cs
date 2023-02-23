@@ -1,7 +1,7 @@
 ﻿namespace SuperheroesDb_Project.Models;
 public class Customer
 {
-    //Id, first name, last name, country, postal code,
+    // Customer class contains the different variables that are needed to complete the assignment. 
     public int Id { get; set; }
 
     public string FirstName { get; set; } = null!;

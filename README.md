@@ -27,6 +27,7 @@ The application is made with C#, SQL and it is created in Visual Studio.
 ### Prerequisites
 
 You need to install Visual Studio and use the C# extension and prerequisites while downloading the IDE.
+It is also important to change the string for the database to access the correct database on your computer. 
 
 ### Tools Used
 
